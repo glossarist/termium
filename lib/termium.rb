@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require 'glossarist'
-require 'shale'
-require 'shale/adapter/nokogiri'
+require "glossarist"
+require "shale"
+require "shale/adapter/nokogiri"
 Shale.xml_adapter = Shale::Adapter::Nokogiri
 
 module Termium
   class Error < StandardError; end
-
 end
 
 require_relative "termium/version"

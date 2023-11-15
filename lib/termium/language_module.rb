@@ -1,17 +1,19 @@
-require_relative 'entry_term'
-require_relative 'textual_support'
+# frozen_string_literal: true
+
+require_relative "entry_term"
+require_relative "textual_support"
 
 module Termium
-
+  # For <languageModule>
   class LanguageModule < Shale::Mapper
     attribute :language, Shale::Type::String
     attribute :entry_term, EntryTerm, collection: true
-    attribute :textual_support, TextualSupport, collection:true
+    attribute :textual_support, TextualSupport, collection: true
     xml do
-      root 'languageModule'
-      map_attribute 'language', to: :language
-      map_element 'entryTerm', to: :entry_term
-      map_element 'textualSupport', to: :textual_support
+      root "languageModule"
+      map_attribute "language", to: :language
+      map_element "entryTerm", to: :entry_term
+      map_element "textualSupport", to: :textual_support
     end
 
     def definition_raw
@@ -19,11 +21,11 @@ module Termium
     end
 
     def definition
-      definition_raw ? definition_raw.value_typed : nil
+      definition_raw&.value_typed
     end
 
     def domain
-      definition_raw ? definition_raw.domain : nil
+      definition_raw&.domain
     end
 
     def notes
@@ -41,7 +43,7 @@ module Termium
     LANGUAGE_CODE_MAPPING = {
       "en" => "eng",
       "fr" => "fre"
-    }
+    }.freeze
 
     def designations
       # NOTE: entry_term is a collection
@@ -49,24 +51,18 @@ module Termium
     end
 
     def to_h
-      lang_code = LANGUAGE_CODE_MAPPING[language.downcase]
-
       # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
       return nil unless definition
 
       src = {
-        "language_code" => lang_code,
+        "language_code" => LANGUAGE_CODE_MAPPING[language.downcase],
         "terms" => designations.map(&:to_h),
-        "definition" => [{
-          content: definition
-        }],
+        "definition" => [{ content: definition }],
         "notes" => notes,
-        "examples" => examples,
+        "examples" => examples
       }
 
-      if domain
-        src["domain"] = domain
-      end
+      src["domain"] = domain if domain
 
       src
     end
@@ -74,6 +70,7 @@ module Termium
     def to_concept
       x = to_h
       return nil unless x
+
       Glossarist::LocalizedConcept.new(x)
     end
   end

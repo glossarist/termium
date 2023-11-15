@@ -1,8 +1,10 @@
-require_relative 'source_ref'
-require_relative 'parameter'
+# frozen_string_literal: true
+
+require_relative "source_ref"
+require_relative "parameter"
 
 module Termium
-
+  # For <universalEntry>
   class UniversalEntry < Shale::Mapper
     attribute :order, Shale::Type::Integer
     attribute :value, Shale::Type::String
@@ -16,12 +18,11 @@ module Termium
     # </universalEntry>
 
     xml do
-      root 'universalEntry'
-      map_attribute 'order', to: :order
-      map_element 'value', to: :value
-      map_element 'sourceRef', to: :source_ref
-      map_element 'parameter', to: :parameter
+      root "universalEntry"
+      map_attribute "order", to: :order
+      map_element "value", to: :value
+      map_element "sourceRef", to: :source_ref
+      map_element "parameter", to: :parameter
     end
   end
-
 end

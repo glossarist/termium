@@ -1,18 +1,20 @@
-require_relative 'source_ref'
+# frozen_string_literal: true
+
+require_relative "source_ref"
 
 module Termium
-
+  # For <textualSupport>
   class TextualSupport < Shale::Mapper
     attribute :order, Shale::Type::Integer
     attribute :type, Shale::Type::String
     attribute :value, Shale::Type::String
     attribute :source_ref, SourceRef
     xml do
-      root 'textualSupport'
-      map_attribute 'order', to: :order
-      map_attribute 'type', to: :type
-      map_element 'value', to: :value
-      map_element 'sourceRef', to: :source_ref
+      root "textualSupport"
+      map_attribute "order", to: :order
+      map_attribute "type", to: :type
+      map_element "value", to: :value
+      map_element "sourceRef", to: :source_ref
     end
 
     def value_cleaned
@@ -29,7 +31,7 @@ module Termium
       end
     end
 
-    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/
+    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/.freeze
     def is_example?
       value_cleaned.match(EXAMPLE_REGEX)
     end
@@ -42,13 +44,17 @@ module Termium
       !is_definition? && !is_example?
     end
 
-    def value_example
-      value_cleaned.gsub(EXAMPLE_REGEX, '')
+    def is_observation?
+      type == "OBS"
     end
 
-    DEFINITION_REGEX = /\A\<(.+?)\>\s*/
+    def value_example
+      value_cleaned.gsub(EXAMPLE_REGEX, "")
+    end
+
+    DEFINITION_REGEX = /\A<(.+?)>\s*/.freeze
     def value_definition
-      value_cleaned.gsub(DEFINITION_REGEX, '')
+      value_cleaned.gsub(DEFINITION_REGEX, "")
     end
 
     def has_domain?
@@ -56,9 +62,9 @@ module Termium
     end
 
     def domain
-      if has_domain?
-        value_cleaned.match(DEFINITION_REGEX)[1]
-      end
+      return unless has_domain?
+
+      value_cleaned.match(DEFINITION_REGEX)[1]
     end
 
     # This is an attempt to extract the textual reference within the note.
@@ -70,10 +76,10 @@ module Termium
       x = note.match(/\[.*\]/)
       return nil if x.nil?
 
-      ref = x.match(/\[.*\]/).to_s.gsub(/[\[\]]/, '')
+      ref = x.match(/\[.*\]/).to_s.gsub(/[\[\]]/, "")
 
       # "[ISO/IEC 2382-13:1996; ISO/IEC 2382-24:1995]"
-      refs = if ref.include?(";")
+      if ref.include?(";")
         ref.split("; ")
       else
         [ref]

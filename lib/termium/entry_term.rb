@@ -1,9 +1,12 @@
-require_relative 'source_ref'
-require_relative 'abbreviation'
-require_relative 'parameter'
-require_relative 'designation_operations'
+# frozen_string_literal: true
+
+require_relative "source_ref"
+require_relative "abbreviation"
+require_relative "parameter"
+require_relative "designation_operations"
 
 module Termium
+  # For <entryTerm>
   class EntryTerm < Shale::Mapper
     attribute :order, Shale::Type::Integer
     attribute :value, Shale::Type::String
@@ -13,12 +16,12 @@ module Termium
     include DesignationOperations
 
     xml do
-      root 'entryTerm'
-      map_attribute 'order', to: :order
-      map_attribute 'value', to: :value
-      map_element 'abbreviation', to: :abbreviation
-      map_element 'sourceRef', to: :source_ref
-      map_element 'parameter', to: :parameter
+      root "entryTerm"
+      map_attribute "order", to: :order
+      map_attribute "value", to: :value
+      map_element "abbreviation", to: :abbreviation
+      map_element "sourceRef", to: :source_ref
+      map_element "parameter", to: :parameter
     end
 
     # attr_accessor :geographical_area,
@@ -33,7 +36,7 @@ module Termium
       "GB" => "GB",
       "AUS" => "AU",
       "EUR" => "EU"
-    }
+    }.freeze
     def geographical_area
       keys = GEOGRAPHICAL_CODE_MAPPING.keys
       usage = parameter.select do |x|
@@ -52,9 +55,11 @@ module Termium
     end
 
     def plurality
-      parameter.map(&:abbreviation).include?("PL") ?
-        "plural" :
+      if parameter.map(&:abbreviation).include?("PL")
+        "plural"
+      else
         "singular"
+      end
     end
 
     def to_h
@@ -64,21 +69,13 @@ module Termium
         "normative_status" => deprecated ? "deprecated" : "preferred"
       }
 
-      if geographical_area
-        set["geographical_area"] = geographical_area
-      end
+      set["geographical_area"] = geographical_area if geographical_area
 
-      if plurality
-        set["plurality"] = plurality
-      end
+      set["plurality"] = plurality if plurality
 
-      if gender
-        set["gender"] = gender
-      end
+      set["gender"] = gender if gender
 
-      if part_of_speech
-        set["part_of_speech"] = part_of_speech
-      end
+      set["part_of_speech"] = part_of_speech if part_of_speech
 
       set
     end

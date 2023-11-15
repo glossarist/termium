@@ -1,20 +1,22 @@
-require_relative 'extract_language'
-require_relative 'core'
+# frozen_string_literal: true
+
+require_relative "extract_language"
+require_relative "core"
 
 module Termium
-
+  # For <extract>
   class Extract < Shale::Mapper
     attribute :language, Shale::Type::String
     attribute :extract_language, ExtractLanguage, collection: true
     attribute :core, Core, collection: true
 
     xml do
-      root 'termium_extract'
+      root "termium_extract"
       # namespace 'http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium', 'ns2'
 
-      map_attribute 'language', to: :language
-      map_element 'extractLanguage', to: :extract_language
-      map_element 'core', to: :core
+      map_attribute "language", to: :language
+      map_element "extractLanguage", to: :extract_language
+      map_element "core", to: :core
     end
 
     def to_concept
@@ -24,4 +26,3 @@ module Termium
     end
   end
 end
-

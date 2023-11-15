@@ -1,8 +1,11 @@
-require_relative 'source_ref'
-require_relative 'parameter'
-require_relative 'designation_operations'
+# frozen_string_literal: true
+
+require_relative "source_ref"
+require_relative "parameter"
+require_relative "designation_operations"
 
 module Termium
+  # For <abbreviation>
   class Abbreviation < Shale::Mapper
     attribute :order, Shale::Type::Integer
     attribute :value, Shale::Type::String
@@ -17,11 +20,11 @@ module Termium
     # <parameter abbreviation="NORM" />
 
     xml do
-      root 'abbreviation'
-      map_attribute 'order', to: :order
-      map_attribute 'value', to: :value
-      map_element 'sourceRef', to: :source_ref
-      map_element 'parameter', to: :parameter
+      root "abbreviation"
+      map_attribute "order", to: :order
+      map_attribute "value", to: :value
+      map_element "sourceRef", to: :source_ref
+      map_element "parameter", to: :parameter
     end
 
     def deprecated
@@ -43,16 +46,11 @@ module Termium
       #   set["plurality"] = plurality
       # end
 
-      if gender
-        set["gender"] = gender
-      end
+      set["gender"] = gender if gender
 
-      if part_of_speech
-        set["part_of_speech"] = part_of_speech
-      end
+      set["part_of_speech"] = part_of_speech if part_of_speech
 
       set
     end
-
   end
 end

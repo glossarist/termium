@@ -1,10 +1,12 @@
-require_relative 'language_module'
-require_relative 'subject'
-require_relative 'universal_entry'
-require_relative 'source'
+# frozen_string_literal: true
+
+require_relative "language_module"
+require_relative "subject"
+require_relative "universal_entry"
+require_relative "source"
 
 module Termium
-
+  # For <core>
   class Core < Shale::Mapper
     attribute :identification_number, Shale::Type::String
     attribute :dissemination_level, Shale::Type::String
@@ -15,13 +17,13 @@ module Termium
     attribute :source, Source, collection: true
 
     xml do
-      root 'core'
-      map_attribute 'disseminationLevel', to: :dissemination_level
-      map_attribute 'identificationNumber', to: :identification_number
-      map_element 'languageModule', to: :language_module
-      map_element 'subject', to: :subject
-      map_element 'universalEntry', to: :universal_entry
-      map_element 'source', to: :source
+      root "core"
+      map_attribute "disseminationLevel", to: :dissemination_level
+      map_attribute "identificationNumber", to: :identification_number
+      map_element "languageModule", to: :language_module
+      map_element "subject", to: :subject
+      map_element "universalEntry", to: :universal_entry
+      map_element "source", to: :source
     end
 
     # TODO: In Termium XML, each definition per lang or note can be linked to a
@@ -47,6 +49,5 @@ module Termium
 
       concept
     end
-
   end
 end
