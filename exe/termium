@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/termium"
+
+class TermiumCommand < Thor
+  desc "convert", "Convert Termium entries into a Glossarist dataset"
+
+  option :input_file, aliases: :i, required: true, desc: "Path to TERMIUM Plus XML extract"
+  option :output_file, aliases: :o, desc: "Output file path"
+
+  def convert
+
+    input_path = Pathname.new(Dir.pwd).join(Pathname.new(options[:input_file]))
+
+    unless input_path.exist?
+      throw StandardError.new("Input file `#{options[:input_file]}` does not exist.")
+    end
+
+    puts "Reading input file: #{input_path.relative_path_from(Dir.pwd)}"
+    termium_extract = Termium::Extract.from_xml(IO.read(input_path.expand_path))
+
+    puts "Size of dataset: #{termium_extract.core.size}"
+    # pp termium_extract.core.first
+    # pp termium_extract.core.first.to_concept
+
+    puts "Converting to Glossarist..."
+    glossarist_coll = termium_extract.to_concept
+    # pp glossarist_coll.first
+
+    output_path = options[:output_file]
+    unless output_path
+      puts input_path.basename
+      output_path = input_path.dirname.join(input_path.basename(input_path.extname))
+      puts output_path
+    end
+
+    output_path = Pathname.new(Dir.pwd).join(Pathname.new(output_path))
+
+    unless output_path.exist? # and is directory
+      output_path.mkdir
+    end
+
+    glossarist_coll.save_to_files(output_path.expand_path)
+    puts "Written Glossarist dataset to #{output_path.relative_path_from(Dir.pwd)}"
+
+    # IO.write("ISO-IEC_2382.yaml", glossarist_coll.to_yaml)
+  end
+
+  def method_missing(*args)
+    warn "No method found named: #{args[0]}"
+    warn "Run with `--help` or `-h` to see available options"
+    exit 1
+  end
+
+  def respond_to_missing?
+    true
+  end
+
+  def self.exit_on_failure?
+    true
+  end
+end
+
+TermiumCommand.start(ARGV)
