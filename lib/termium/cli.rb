@@ -5,53 +5,59 @@ require_relative "../termium"
 module Termium
   # Command-line interface
   class Cli < Thor
-    desc "convert", "Convert Termium entries into a Glossarist dataset"
+    desc "convert", "Convert TERMIUM entries into a Glossarist dataset"
 
     option :input_file, aliases: :i, required: true, desc: "Path to TERMIUM Plus XML extract"
     option :output_file, aliases: :o, desc: "Output file path"
 
-    def input_file_as_path
-      input_path = Pathname.new(Dir.pwd).join(Pathname.new(options[:input_file]))
+    no_commands do
+      def input_file_as_path(input_file)
+        input_path = Pathname.new(Dir.pwd).join(Pathname.new(input_file))
 
-      unless input_path.exist?
-        error "Input file `#{options[:input_file]}` does not exist."
-        exit 1
+        unless input_path.exist?
+          error "TERMIUM export file `#{options[:input_file]}` does not exist."
+          exit 1
+        end
+
+        input_path
       end
 
-      input_path
-    end
+      def output_dir_as_path(output_path, input_path)
+        output_path ||= input_path.dirname.join(input_path.basename(input_path.extname))
 
-    def output_path_ready
-      output_path = options[:output_file]
-      output_path ||= input_path.dirname.join(input_path.basename(input_path.extname))
-
-      output_path = Pathname.new(Dir.pwd).join(Pathname.new(output_path))
-
-      if output_path.exist?
-        puts "Using existing directory: #{output_path.relative_path_from(Dir.pwd)}"
-      else # and is directory
-        puts "Created directory: #{output_path.relative_path_from(Dir.pwd)}"
-        output_path.mkdir
+        output_path = Pathname.new(Dir.pwd).join(output_path)
+        create_or_use_output_path(output_path)
+        output_path
       end
 
-      output_path
+      def create_or_use_output_path(output_path)
+        output_path_rel = output_path.relative_path_from(Dir.pwd)
+        if output_path.exist?
+          puts "Using existing directory: #{output_path_rel}"
+        else # and is directory
+          puts "Created directory: #{output_path_rel}"
+          output_path.mkdir
+        end
+      end
     end
 
     def convert
-      input_path = input_file_as_path
-      puts "Reading input file: #{input_path.relative_path_from(Dir.pwd)}"
+      input_path = input_file_as_path(options[:input_file])
+
+      puts "Reading TERMIUM export file: #{input_path.relative_path_from(Dir.pwd)}"
       termium_extract = Termium::Extract.from_xml(IO.read(input_path.expand_path))
 
-      puts "Size of dataset: #{termium_extract.core.size}"
+      puts "Size of TERMIUM dataset: #{termium_extract.core.size}"
 
       puts "Converting to Glossarist..."
       glossarist_col = termium_extract.to_concept
       # pp glossarist_col.first
 
-      output_path = output_path_ready
-      puts "Writing Glossarist dataset..."
+      output_path = output_dir_as_path(options[:output_file], input_path)
+      puts "Writing Glossarist dataset to: #{output_path.relative_path_from(Dir.pwd)}"
       glossarist_col.save_to_files(output_path.expand_path)
-      puts "Written Glossarist dataset to: #{output_path.relative_path_from(Dir.pwd)}"
+      puts "Done."
+      exit 0
     end
 
     def method_missing(*args)

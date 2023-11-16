@@ -28,10 +28,17 @@ module Termium
 
     # TODO: In Termium XML, each definition per lang or note can be linked to a
     # particular source via the sourceRef number.
+    # We should utilize "source" order ID in the Glossarist object:
+    # <source order="1" details="ISO-2382-6 * 1987 *  *  * " />
+    # <source order="2"
+    #   details="Ranger, Natalie * 2006 * Bureau de la traduction..." />
     def concept_sources
       source.map(&:to_concept_source)
     end
 
+    # TODO: Utilize "subject" in the Glossarist object:
+    # <subject abbreviation="YBB"
+    # details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary" />
     def to_concept
       concept = Glossarist::ManagedConcept.new(id: identification_number)
 
