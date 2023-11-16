@@ -62,11 +62,17 @@ module Termium
       end
     end
 
+    def normative_status
+      return "deprecated" if deprecated
+
+      order == 1 ? "preferred" : "admitted"
+    end
+
     def to_h
       set = {
         "designation" => value,
         "type" => "expression",
-        "normative_status" => deprecated ? "deprecated" : "preferred"
+        "normative_status" => normative_status
       }
 
       set["geographical_area"] = geographical_area if geographical_area
