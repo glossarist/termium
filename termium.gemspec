@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "glossarist", "~> 1.0"
+  spec.add_dependency "glossarist", "~> 2.0"
   spec.add_dependency "shale"
   spec.add_dependency "thor"
 
