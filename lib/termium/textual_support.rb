@@ -4,10 +4,10 @@ require_relative "source_ref"
 
 module Termium
   # For <textualSupport>
-  class TextualSupport < Shale::Mapper
-    attribute :order, Shale::Type::Integer
-    attribute :type, Shale::Type::String
-    attribute :value, Shale::Type::String
+  class TextualSupport < Lutaml::Model::Serializable
+    attribute :order, :integer
+    attribute :type, :string
+    attribute :value, :string
     attribute :source_ref, SourceRef
     xml do
       root "textualSupport"
@@ -32,6 +32,7 @@ module Termium
     end
 
     EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/.freeze
+
     def is_example?
       value_cleaned.match(EXAMPLE_REGEX)
     end
@@ -53,6 +54,7 @@ module Termium
     end
 
     DEFINITION_REGEX = /\A<(.+?)>\s*/.freeze
+
     def value_definition
       value_cleaned.gsub(DEFINITION_REGEX, "")
     end

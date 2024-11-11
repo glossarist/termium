@@ -2,8 +2,8 @@
 
 module Termium
   # For <sourceRef>
-  class SourceRef < Shale::Mapper
-    attribute :order, Shale::Type::Integer
+  class SourceRef < Lutaml::Model::Serializable
+    attribute :order, :integer
     xml do
       root "sourceRef"
       map_attribute "order", to: :order
