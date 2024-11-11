@@ -12,21 +12,12 @@ module Termium
 
     xml do
       root "termium_extract"
-      # namespace "http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium", "ns2"
+      namespace "http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium", "ns2"
 
-      map_attribute "language", to: :language
-      map_element "extractLanguage", to: :extract_language
-      map_element "core", to: :core
+      map_attribute "language", to: :language, namespace: nil
+      map_element "extractLanguage", to: :extract_language, namespace: nil
+      map_element "core", to: :core, namespace: nil
     end
-
-    # xml do
-    #   root "termium_extract"
-    #   namespace "http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium", "ns2"
-
-    #   map_attribute "language", to: :language, namespace: nil
-    #   map_element "extractLanguage", to: :extract_language, namespace: nil
-    #   map_element "core", to: :core, namespace: nil
-    # end
 
     def to_concept
       coll = Glossarist::ManagedConceptCollection.new
