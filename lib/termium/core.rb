@@ -7,9 +7,9 @@ require_relative "source"
 
 module Termium
   # For <core>
-  class Core < Shale::Mapper
-    attribute :identification_number, Shale::Type::String
-    attribute :dissemination_level, Shale::Type::String
+  class Core < Lutaml::Model::Serializable
+    attribute :identification_number, :string
+    attribute :dissemination_level, :string
 
     attribute :language_module, LanguageModule, collection: true
     attribute :subject, Subject

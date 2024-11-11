@@ -7,9 +7,9 @@ require_relative "designation_operations"
 
 module Termium
   # For <entryTerm>
-  class EntryTerm < Shale::Mapper
-    attribute :order, Shale::Type::Integer
-    attribute :value, Shale::Type::String
+  class EntryTerm < Lutaml::Model::Serializable
+    attribute :order, :integer
+    attribute :value, :string
     attribute :source_ref, SourceRef
     attribute :abbreviation, Abbreviation, collection: true
     attribute :parameter, Parameter, collection: true
@@ -19,9 +19,9 @@ module Termium
       root "entryTerm"
       map_attribute "order", to: :order
       map_attribute "value", to: :value
-      map_element "abbreviation", to: :abbreviation
       map_element "sourceRef", to: :source_ref
       map_element "parameter", to: :parameter
+      map_element "abbreviation", to: :abbreviation
     end
 
     # attr_accessor :geographical_area,
@@ -35,8 +35,9 @@ module Termium
       "CAN" => "CA",
       "GB" => "GB",
       "AUS" => "AU",
-      "EUR" => "EU"
+      "EUR" => "EU",
     }.freeze
+
     def geographical_area
       keys = GEOGRAPHICAL_CODE_MAPPING.keys
       usage = parameter.select do |x|
@@ -72,7 +73,7 @@ module Termium
       set = {
         "designation" => value,
         "type" => "expression",
-        "normative_status" => normative_status
+        "normative_status" => normative_status,
       }
 
       set["geographical_area"] = geographical_area if geographical_area

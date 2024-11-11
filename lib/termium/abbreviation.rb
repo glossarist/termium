@@ -6,9 +6,9 @@ require_relative "designation_operations"
 
 module Termium
   # For <abbreviation>
-  class Abbreviation < Shale::Mapper
-    attribute :order, Shale::Type::Integer
-    attribute :value, Shale::Type::String
+  class Abbreviation < Lutaml::Model::Serializable
+    attribute :order, :integer
+    attribute :value, :string
     attribute :source_ref, SourceRef
     attribute :parameter, Parameter, collection: true
     include DesignationOperations
@@ -35,7 +35,7 @@ module Termium
       set = {
         "designation" => value,
         "type" => "abbreviation",
-        "normative_status" => deprecated ? "deprecated" : "preferred"
+        "normative_status" => deprecated ? "deprecated" : "preferred",
       }
 
       # if geographical_area

@@ -6,6 +6,39 @@ The Termium Ruby gem parses export data formats from the
 https://www.btb.termiumplus.gc.ca[TERMIUM Plus]
 terminology database service from the Government of Canada.
 
+== WARNING - Termium XML output requires manual correction
+
+The default Termium XML output is invalid where the term domains using angular
+brackets have the "greater than" sign not escaped:
+
+[source,xml]
+----
+<textualSupport order="1" type="DEF">
+  <value>&lt;artificial intelligence> operation that allows the firing of a rule, or the
+    invocation of a program or a subprogram</value>
+  <sourceRef order="1" />
+</textualSupport>
+----
+
+The remedy is to manually escape the "greater than" sign using a find/replace or a regular expression:
+
+[source,ruby]
+----
+string.gsub(/&lt;([^>]+)>/, '<\1>')
+----
+
+Results in:
+
+[source,xml]
+----
+<textualSupport order="1" type="DEF">
+  <value>&lt;artificial intelligence&gt; operation that allows the firing of a rule, or the
+    invocation of a program or a subprogram</value>
+  <sourceRef order="1" />
+</textualSupport>
+----
+
+
 
 == Commands
 
@@ -43,7 +76,7 @@ If not provided, defaults to the basename of the input file, e.g. `foo/bar.xml` 
 
 === Usage
 
-This gem makes heavy use of the `Shale` classes for XML serialization.
+This gem makes heavy use of the `lutaml-model` classes for XML serialization.
 
 The following code converts the Termium extract into a Glossarist dataset.
 

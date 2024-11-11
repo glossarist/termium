@@ -2,9 +2,9 @@
 
 module Termium
   # For <subject>
-  class Subject < Shale::Mapper
-    attribute :abbreviation, Shale::Type::String
-    attribute :details, Shale::Type::String
+  class Subject < Lutaml::Model::Serializable
+    attribute :abbreviation, :string
+    attribute :details, :string
 
     # <subject abbreviation="YBB" details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary"/>
     xml do

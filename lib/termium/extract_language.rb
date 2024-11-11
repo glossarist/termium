@@ -2,9 +2,9 @@
 
 module Termium
   # For <extractLanguage>
-  class ExtractLanguage < Shale::Mapper
-    attribute :language, Shale::Type::String
-    attribute :order, Shale::Type::Integer
+  class ExtractLanguage < Lutaml::Model::Serializable
+    attribute :language, :string
+    attribute :order, :integer
     xml do
       root "extractLanguage"
       map_attribute "language", to: :language

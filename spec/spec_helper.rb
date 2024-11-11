@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
+require "pry"
 require "termium"
+require "xml-c14n"
+require "equivalent-xml"
 
-Bundler.require(:development)
-
-Dir["./spec/support/**/*.rb"].sort.each { |file| require file }
+Dir["spec/support/**/*.rb"].each do |it|
+  require File.expand_path(it)
+end
 
 RSpec.configure do |config|
+  config.include Helper
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
 

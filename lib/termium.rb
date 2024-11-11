@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 require "glossarist"
-require "shale"
-require "shale/adapter/nokogiri"
-Shale.xml_adapter = Shale::Adapter::Nokogiri
+
+require "lutaml/model"
+require "lutaml/model/xml_adapter/nokogiri_adapter"
+
+Lutaml::Model::Config.configure do |config|
+  config.xml_adapter = Lutaml::Model::XmlAdapter::NokogiriAdapter
+end
 
 module Termium
   class Error < StandardError; end

@@ -5,9 +5,9 @@ require_relative "parameter"
 
 module Termium
   # For <universalEntry>
-  class UniversalEntry < Shale::Mapper
-    attribute :order, Shale::Type::Integer
-    attribute :value, Shale::Type::String
+  class UniversalEntry < Lutaml::Model::Serializable
+    attribute :order, :integer
+    attribute :value, :string
     attribute :source_ref, SourceRef
     attribute :parameter, Parameter
 

@@ -2,9 +2,9 @@
 
 module Termium
   # For <parameter>
-  class Parameter < Shale::Mapper
+  class Parameter < Lutaml::Model::Serializable
     # <parameter abbreviation="NORM"/>
-    attribute :abbreviation, Shale::Type::String
+    attribute :abbreviation, :string
     xml do
       root "parameter"
       map_attribute "abbreviation", to: :abbreviation

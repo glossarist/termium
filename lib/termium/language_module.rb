@@ -5,8 +5,8 @@ require_relative "textual_support"
 
 module Termium
   # For <languageModule>
-  class LanguageModule < Shale::Mapper
-    attribute :language, Shale::Type::String
+  class LanguageModule < Lutaml::Model::Serializable
+    attribute :language, :string
     attribute :entry_term, EntryTerm, collection: true
     attribute :textual_support, TextualSupport, collection: true
     xml do
@@ -42,7 +42,7 @@ module Termium
 
     LANGUAGE_CODE_MAPPING = {
       "en" => "eng",
-      "fr" => "fre"
+      "fr" => "fre",
     }.freeze
 
     def designations
@@ -59,7 +59,7 @@ module Termium
         "terms" => designations.map(&:to_h),
         "definition" => [{ content: definition }],
         "notes" => notes,
-        "examples" => examples
+        "examples" => examples,
       }
 
       src["domain"] = domain if domain

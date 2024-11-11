@@ -2,12 +2,12 @@
 
 module Termium
   # For <source>
-  class Source < Shale::Mapper
+  class Source < Lutaml::Model::Serializable
     ISO_BIB_REGEX = /\AISO-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
     ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
 
-    attribute :order, Shale::Type::Integer
-    attribute :details, Shale::Type::String
+    attribute :order, :integer
+    attribute :details, :string
     xml do
       root "source"
       map_attribute "order", to: :order
@@ -28,7 +28,7 @@ module Termium
       Glossarist::ConceptSource.new({
                                       "type" => "lineage",
                                       "ref" => content,
-                                      "status" => "identical"
+                                      "status" => "identical",
                                     })
     end
   end
