@@ -1,4 +1,6 @@
 RSpec.shared_examples "a serializer" do
+  # equivalent-xml runs too slowly that it is not practical to run it on
+  # long tests
   xit "round-trips with equivalent-xml" do
     input = fixture.read.gsub("> ", "&gt; ")
 
@@ -14,8 +16,8 @@ RSpec.shared_examples "a serializer" do
     serialized = described_class.from_xml(input)
     output = Xml::C14n.format(serialized.to_xml)
 
-    File.write("tmp/output.xml", output)
-    File.write("tmp/input.xml", input)
+    # File.write("tmp/output.xml", output)
+    # File.write("tmp/input.xml", input)
 
     expect(output).to be_analogous_with(input)
   end
