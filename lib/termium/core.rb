@@ -13,7 +13,7 @@ module Termium
 
     attribute :language_module, LanguageModule, collection: true
     attribute :subject, Subject
-    attribute :universal_entry, UniversalEntry
+    attribute :universal_entry, UniversalEntry, collection: true
     attribute :source, Source, collection: true
 
     xml do
@@ -47,9 +47,9 @@ module Termium
         next if localized_concept.nil?
 
         localized_concept.id = identification_number
-        # TODO: this should just be localized_concept.notes << universal_entry.value
-        # TODO: Depends on https://github.com/glossarist/glossarist-ruby/issues/82
-        localized_concept.notes << Glossarist::DetailedDefinition.new(universal_entry.value)
+        universal_entry.each do |entry|
+          localized_concept.notes << entry.value
+        end
         localized_concept.sources = concept_sources
         concept.add_localization(localized_concept)
       end
