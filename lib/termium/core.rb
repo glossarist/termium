@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "uuidtools"
 require_relative "language_module"
 require_relative "subject"
 require_relative "universal_entry"
@@ -36,25 +37,45 @@ module Termium
       source.map(&:to_concept_source)
     end
 
+    # Deterministic v4 UUID by using the number string
+    def uuid
+      UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, identification_number).to_s
+    end
+
     # TODO: Utilize "subject" in the Glossarist object:
     # <subject abbreviation="YBB"
     # details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary" />
-    def to_concept
-      concept = Glossarist::ManagedConcept.new(id: identification_number)
+    def to_concept(options = {})
+      Glossarist::ManagedConcept.new.tap do |concept|
+        # The way to set the universal concept's identifier: data.identifier
+        concept.id = identification_number
 
-      language_module.map(&:to_concept).each do |localized_concept|
-        # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
-        next if localized_concept.nil?
+        concept.uuid = uuid
 
-        localized_concept.id = identification_number
-        universal_entry.each do |entry|
-          localized_concept.notes << entry.value
+        # Assume no related concepts
+        concept.related = []
+        concept.status = "valid"
+
+        if options[:date_accepted]
+          concept.date_accepted = options[:date_accepted]
         end
-        localized_concept.sources = concept_sources
-        concept.add_localization(localized_concept)
-      end
 
-      concept
+        language_module.map(&:to_concept).each do |localized_concept|
+          # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
+          next if localized_concept.nil?
+
+          localized_concept.id = identification_number
+          universal_entry.each do |entry|
+            localized_concept.notes << entry.value
+          end
+          localized_concept.sources = concept_sources
+          concept.add_localization(localized_concept)
+        end
+
+        puts identification_number
+        puts concept.to_h
+        concept
+      end
     end
   end
 end

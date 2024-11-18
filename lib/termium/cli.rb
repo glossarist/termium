@@ -9,6 +9,7 @@ module Termium
 
     option :input_file, aliases: :i, required: true, desc: "Path to TERMIUM Plus XML extract"
     option :output_file, aliases: :o, desc: "Output file path"
+    option :date_accepted, desc: "Date of acceptance for the dataset"
 
     no_commands do
       def input_file_as_path(input_file)
@@ -50,7 +51,11 @@ module Termium
       puts "Size of TERMIUM dataset: #{termium_extract.core.size}"
 
       puts "Converting to Glossarist..."
-      glossarist_col = termium_extract.to_concept
+      convert_options = {}
+      if options[:date_accepted]
+        convert_options[:date_accepted] = Date.parse(options[:date_accepted])
+      end
+      glossarist_col = termium_extract.to_concept(convert_options)
       # pp glossarist_col.first
 
       output_path = output_dir_as_path(options[:output_file], input_path)
