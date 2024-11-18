@@ -42,17 +42,37 @@ Results in:
 
 == Commands
 
-`termium convert`:: Convert a TERMIUM Plus export XML file to a Glossarist dataset
+`termium convert`:: Convert a TERMIUM Plus export XML file to a Paneron Glossarist dataset.
 
 
-=== Usage
+=== `termium convert`
+
+==== Purpose
+
+This command converts a TERMIUM Plus export XML (`<ns2:termium_extract>`) file
+to a Paneron Glossarist dataset.
+
+The resulting dataset will look like this:
+
+[source]
+----
+{OUTPUT_PATH}/
+├── concepts/
+│   ├── {CONCEPT_ID}.yaml
+│   ├── ...
+├── localized_concepts/
+    ├── {LOCALIZED_CONCEPT_ID}.yaml
+    ├── ...
+----
+
+==== Usage
 
 [source,sh]
 ----
-$ termium convert -i INPUT_XML_FILE [-o OUTPUT_PATH]
+$ termium convert -i INPUT_XML_FILE [-o OUTPUT_PATH] [-o DATE_ACCEPTED]
 ----
 
-=== Options
+==== Options
 
 [cols="a,a",options="header"]
 |===
@@ -61,7 +81,7 @@ $ termium convert -i INPUT_XML_FILE [-o OUTPUT_PATH]
 |`-i`, `--input-path`
 |
 Source path to TERMIUM Plus XML export file.
-The file needs to start with the `<extract>` tag.
+The file needs to start with the `<ns2:termium_extract>` element.
 
 |`-o`, `--output-path`
 |
@@ -69,7 +89,88 @@ Destination path to Glossarist dataset directory.
 If the directory doesn't exist it will be created.
 If not provided, defaults to the basename of the input file, e.g. `foo/bar.xml` will export to `foo/bar/`.
 
+|`--date-accepted`
+|
+Date of acceptance for the dataset. This fills in the `date_accepted` value of
+the universal concept (which is exported to a YAML file).
+
 |===
+
+
+==== Examples
+
+The data structures of these files can be seen in the following examples.
+
+
+.Sample of `{CONCEPT_ID}.yaml`
+[example]
+====
+This is `88a7dd87-6199-3516-9cec-f4cd79ff09c6.yaml`.
+
+[source,yaml]
+----
+---
+data:
+  identifier: '2120638'
+  localized_concepts:
+    eng: e114ee44-e601-5623-9099-48cfc2be2224
+    fre: 9a7b88cb-4ee6-5d59-89bb-230425a3c96a
+related: []
+date_accepted: 2015-05-01
+status: valid
+id: 88a7dd87-6199-3516-9cec-f4cd79ff09c6
+----
+====
+
+.Sample of `{LOCALIZED_CONCEPT_ID}.yaml`
+[example]
+====
+This is `e114ee44-e601-5623-9099-48cfc2be2224.yaml`.
+
+[source,yaml]
+----
+---
+data:
+  dates: []
+  definition:
+  - content: layer whose nodes directly communicate with external systems
+  examples: []
+  id: '2120638'
+  notes:
+  - content: 'visible layer: term and definition standardized by ISO/IEC [ISO/IEC
+      2382-34:1999].'
+  - content: 34.02.09 (2382)
+  sources:
+  - origin:
+      ref: ISO/IEC 2382-34:1999
+    type: lineage
+    status: identical
+  - origin:
+      ref: Ranger, Natalie * 2006 * Bureau de la traduction / Translation Bureau *
+        Services linguistiques / Linguistic Services * Bur. dir. Centre de traduction
+        et de terminologie / Dir's Office Translation and Terminology Centre * Div.
+        Citoyenneté et Protection civile / Citizen. & Emergency preparedness Div.
+        * Normalisation terminologique / Terminology Standardization
+    type: lineage
+    status: identical
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: visible layer
+    grammar_info:
+    - preposition: false
+      participle: false
+      adj: false
+      verb: false
+      adverb: false
+      noun: false
+      gender: []
+      number:
+      - singular
+  language_code: eng
+----
+====
+
 
 
 == Library
