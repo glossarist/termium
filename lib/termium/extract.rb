@@ -28,9 +28,11 @@ module Termium
     #   map_element "core", to: :core, namespace: nil
     # end
 
-    def to_concept
+    def to_concept(options = {})
       coll = Glossarist::ManagedConceptCollection.new
-      coll.managed_concepts = core.map(&:to_concept)
+      coll.managed_concepts = core.map do |managed_concept|
+        managed_concept.to_concept(options)
+      end
       coll
     end
   end

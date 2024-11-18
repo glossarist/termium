@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "glossarist", "~> 2.0"
   spec.add_dependency "lutaml-model"
   spec.add_dependency "thor"
+  spec.add_dependency "uuidtools"
 end
