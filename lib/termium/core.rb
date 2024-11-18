@@ -71,10 +71,6 @@ module Termium
           localized_concept.sources = concept_sources
           concept.add_localization(localized_concept)
         end
-
-        puts identification_number
-        puts concept.to_h
-        concept
       end
     end
   end
