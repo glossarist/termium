@@ -38,8 +38,8 @@ module Termium
     end
 
     # Deterministic v4 UUID by using the number string
-    def uuid
-      UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, identification_number).to_s
+    def uuid(str = identification_number)
+      UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, str).to_s
     end
 
     # TODO: Utilize "subject" in the Glossarist object:
@@ -60,11 +60,15 @@ module Termium
           concept.date_accepted = options[:date_accepted]
         end
 
-        language_module.map(&:to_concept).each do |localized_concept|
+        language_module.map do |lang_mod|
+          localized_concept = lang_mod.to_concept(options)
+
           # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
           next if localized_concept.nil?
 
           localized_concept.id = identification_number
+          localized_concept.uuid = uuid("#{identification_number}-#{lang_mod.language}")
+
           universal_entry.each do |entry|
             localized_concept.notes << entry.value
           end

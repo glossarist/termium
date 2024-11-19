@@ -60,6 +60,7 @@ module Termium
         "definition" => [{ content: definition }],
         "notes" => notes,
         "examples" => examples,
+        "entry_status" => "valid",
       }
 
       src["domain"] = domain if domain
@@ -67,11 +68,19 @@ module Termium
       src
     end
 
-    def to_concept
+    def to_concept(options = {})
       x = to_h
       return nil unless x
 
-      Glossarist::LocalizedConcept.new(x)
+      Glossarist::LocalizedConcept.new(x).tap do |concept|
+        # Fill in register parameters
+        if options[:date_accepted]
+          puts options[:date_accepted].inspect
+          concept.date_accepted = options[:date_accepted]
+        end
+
+        puts concept.inspect
+      end
     end
   end
 end

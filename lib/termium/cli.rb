@@ -53,7 +53,7 @@ module Termium
       puts "Converting to Glossarist..."
       convert_options = {}
       if options[:date_accepted]
-        convert_options[:date_accepted] = Date.parse(options[:date_accepted])
+        convert_options[:date_accepted] = Date.parse(options[:date_accepted]).iso8601
       end
       glossarist_col = termium_extract.to_concept(convert_options)
       # pp glossarist_col.first
