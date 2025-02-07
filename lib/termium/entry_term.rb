@@ -10,7 +10,7 @@ module Termium
   class EntryTerm < Lutaml::Model::Serializable
     attribute :order, :integer
     attribute :value, :string
-    attribute :source_ref, SourceRef
+    attribute :source_ref, SourceRef, collection: true
     attribute :abbreviation, Abbreviation, collection: true
     attribute :parameter, Parameter, collection: true
     include DesignationOperations
