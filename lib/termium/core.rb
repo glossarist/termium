@@ -70,7 +70,7 @@ module Termium
           localized_concept.uuid = uuid("#{identification_number}-#{lang_mod.language}")
 
           universal_entry.each do |entry|
-            localized_concept.notes << entry.value
+            localized_concept.notes << Glossarist::DetailedDefinition.new(content: entry.value)
           end
           localized_concept.sources = concept_sources
           concept.add_localization(localized_concept)
