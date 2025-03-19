@@ -18,7 +18,7 @@ module Termium
     xml do
       root "entryTerm"
       map_attribute "order", to: :order
-      map_attribute "value", to: :value
+      map_attribute "value", to: :value, value_map: { to: { empty: :empty } }
       map_element "sourceRef", to: :source_ref
       map_element "parameter", to: :parameter
       map_element "abbreviation", to: :abbreviation
