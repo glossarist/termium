@@ -15,7 +15,7 @@ RSpec.describe Termium do
   end
 
   describe "V2 format conversion" do
-    let(:termium_extract) { Termium::Extract.from_xml(IO.read(termium_extract_file)) }
+    let(:termium_extract) { Termium::Extract.from_xml(File.read(termium_extract_file)) }
     let(:glossarist_col) { termium_extract.to_concept }
 
     before do
