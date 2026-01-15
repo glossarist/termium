@@ -86,5 +86,19 @@ module Termium
 
       set
     end
+
+    def to_designation
+      attrs = {
+        designation: value,
+        normative_status: normative_status,
+      }
+
+      attrs[:geographical_area] = geographical_area if geographical_area
+      attrs[:plurality] = plurality if plurality
+      attrs[:gender] = gender if gender
+      attrs[:part_of_speech] = part_of_speech if part_of_speech
+
+      Glossarist::Designation::Expression.new(attrs)
+    end
   end
 end
