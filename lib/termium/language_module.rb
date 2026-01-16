@@ -47,7 +47,7 @@ module Termium
 
     def designations
       # NOTE: entry_term is a collection
-      entry_term + abbreviations
+      (entry_term + abbreviations).compact
     end
 
     def to_h
@@ -69,17 +69,22 @@ module Termium
     end
 
     def to_concept(options = {})
-      x = to_h
-      return nil unless x
+      return nil unless definition
 
-      Glossarist::LocalizedConcept.new(x).tap do |concept|
-        # Fill in register parameters
+      Glossarist::LocalizedConcept.new.tap do |concept|
+        concept.data = Glossarist::ConceptData.new(
+          language_code: LANGUAGE_CODE_MAPPING[language.downcase],
+          terms: designations.map(&:to_designation),
+          definition: [Glossarist::DetailedDefinition.new(content: definition)],
+          notes: notes.map { |n| Glossarist::DetailedDefinition.new(content: n) },
+          examples: examples.map { |e| Glossarist::DetailedDefinition.new(content: e) },
+          entry_status: "valid",
+          domain: domain
+        )
+
         if options[:date_accepted]
-          puts options[:date_accepted].inspect
           concept.date_accepted = options[:date_accepted]
         end
-
-        puts concept.inspect
       end
     end
   end

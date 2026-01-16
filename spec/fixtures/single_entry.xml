@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<ns2:termium_extract xmlns:ns2="http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" language="EN" xsi:schemaLocation="http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium http://termium.tpsgc-pwgsc.gc.ca/schemas/2012/06/Termium.xsd">
+<extractLanguage language="EN" order="0"/>
+<extractLanguage language="FR" order="1"/>
+<core identificationNumber="2123225" disseminationLevel="P">
+  <languageModule language="EN">
+    <entryTerm order="1" value="average information rate">
+      <sourceRef order="1"/>
+      <parameter abbreviation="COR"/>
+      <parameter abbreviation="NORM"/>
+    </entryTerm>
+    <textualSupport order="1" type="DEF">
+      <value>quotient of the character mean entropy by the mean duration of a character</value>
+      <sourceRef order="1"/>
+    </textualSupport>
+    <textualSupport order="2" type="OBS">
+      <value>The average information rate may be expressed in shannons per second.</value>
+      <sourceRef order="1"/>
+    </textualSupport>
+  </languageModule>
+  <languageModule language="FR">
+    <entryTerm order="1" value="débit moyen d'entropie">
+      <sourceRef order="1"/>
+      <parameter abbreviation="COR"/>
+      <parameter abbreviation="M"/>
+      <parameter abbreviation="NORM"/>
+    </entryTerm>
+    <textualSupport order="1" type="DEF">
+      <value>quotient de l'entropie moyenne par caractère par la durée moyenne d'un caractère</value>
+      <sourceRef order="1"/>
+    </textualSupport>
+    <textualSupport order="2" type="OBS">
+      <value>Le débit moyen d'entropie peut s'exprimer en shannons par seconde.</value>
+      <sourceRef order="1"/>
+    </textualSupport>
+  </languageModule>
+  <universalEntry order="1">
+    <value>16.04.07 (2382)</value>
+    <sourceRef order="1"/>
+    <parameter abbreviation="CONUM"/>
+  </universalEntry>
+  <source order="1" details="ISO-IEC-2382-16 * 1996 *  *  * "/>
+  <source order="2" details="Ranger, Natalie * 2006 * Bureau de la traduction"/>
+</core>
+</ns2:termium_extract>

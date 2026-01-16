@@ -30,8 +30,9 @@ module Termium
 
     def to_concept(options = {})
       coll = Glossarist::ManagedConceptCollection.new
-      coll.managed_concepts = core.map do |managed_concept|
-        managed_concept.to_concept(options)
+      core.each do |managed_concept|
+        concept = managed_concept.to_concept(options)
+        coll.store(concept)
       end
       coll
     end

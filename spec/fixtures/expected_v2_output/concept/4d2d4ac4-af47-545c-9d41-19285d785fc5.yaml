@@ -1,0 +1,17 @@
+---
+data:
+  identifier: '2123225'
+  localized_concepts:
+    eng: 33f0da1d-b8af-511c-8a7a-2f777419fa95
+    fre: 848965b7-2090-5f93-af30-8cba405c248c
+  sources:
+  - origin:
+      ref: ISO/IEC 2382-16:1996
+    status: identical
+    type: lineage
+  - origin:
+      ref: Ranger, Natalie * 2006 * Bureau de la traduction
+    status: identical
+    type: lineage
+id: 4d2d4ac4-af47-545c-9d41-19285d785fc5
+status: valid

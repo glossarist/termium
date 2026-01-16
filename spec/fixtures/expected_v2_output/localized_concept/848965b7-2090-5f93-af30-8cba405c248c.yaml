@@ -1,0 +1,26 @@
+---
+data:
+  definition:
+  - content: quotient de l'entropie moyenne par caractère par la durée moyenne d'un
+      caractère
+  examples: []
+  id: '2123225'
+  notes:
+  - content: Le débit moyen d'entropie peut s'exprimer en shannons par seconde.
+  - content: 16.04.07 (2382)
+  sources:
+  - origin:
+      ref: ISO/IEC 2382-16:1996
+    status: identical
+    type: lineage
+  - origin:
+      ref: Ranger, Natalie * 2006 * Bureau de la traduction
+    status: identical
+    type: lineage
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: débit moyen d'entropie
+  language_code: fre
+  entry_status: valid
+id: 848965b7-2090-5f93-af30-8cba405c248c

@@ -47,10 +47,13 @@ module Termium
     # details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary" />
     def to_concept(options = {})
       Glossarist::ManagedConcept.new.tap do |concept|
-        # The way to set the universal concept's identifier: data.identifier
-        concept.id = identification_number
+        # V2: Create new data object to ensure it's serialized (not marked as default)
+        concept.data = Glossarist::ManagedConceptData.new(
+          id: identification_number,
+          sources: concept_sources
+        )
 
-        concept.uuid = uuid
+        concept.id = uuid
 
         # Assume no related concepts
         concept.related = []
@@ -60,19 +63,19 @@ module Termium
           concept.date_accepted = options[:date_accepted]
         end
 
-        language_module.map do |lang_mod|
+        language_module.each do |lang_mod|
           localized_concept = lang_mod.to_concept(options)
 
           # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
           next if localized_concept.nil?
 
-          localized_concept.id = identification_number
-          localized_concept.uuid = uuid("#{identification_number}-#{lang_mod.language}")
+          localized_concept.data.id = identification_number
+          localized_concept.id = uuid("#{identification_number}-#{lang_mod.language}")
 
           universal_entry.each do |entry|
-            localized_concept.notes << Glossarist::DetailedDefinition.new(content: entry.value)
+            localized_concept.data.notes << Glossarist::DetailedDefinition.new(content: entry.value)
           end
-          localized_concept.sources = concept_sources
+          localized_concept.data.sources = concept_sources
           concept.add_localization(localized_concept)
         end
       end

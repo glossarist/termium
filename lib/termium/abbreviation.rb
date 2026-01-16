@@ -52,5 +52,17 @@ module Termium
 
       set
     end
+
+    def to_designation
+      attrs = {
+        designation: value,
+        normative_status: deprecated ? "deprecated" : "preferred",
+      }
+
+      attrs[:gender] = gender if gender
+      attrs[:part_of_speech] = part_of_speech if part_of_speech
+
+      Glossarist::Designation::Abbreviation.new(attrs)
+    end
   end
 end

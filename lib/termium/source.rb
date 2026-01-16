@@ -25,11 +25,11 @@ module Termium
     end
 
     def to_concept_source
-      Glossarist::ConceptSource.new({
-                                      "type" => "lineage",
-                                      "ref" => content,
-                                      "status" => "identical",
-                                    })
+      Glossarist::ConceptSource.new(
+        type: "lineage",
+        status: "identical",
+        origin: Glossarist::Citation.new(ref: content)
+      )
     end
   end
 end
