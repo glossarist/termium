@@ -10,7 +10,7 @@ module Termium
   class EntryTerm < Lutaml::Model::Serializable
     attribute :order, :integer
     attribute :value, :string
-    attribute :source_ref, SourceRef
+    attribute :source_ref, SourceRef, collection: true
     attribute :abbreviation, Abbreviation, collection: true
     attribute :parameter, Parameter, collection: true
     include DesignationOperations
@@ -18,7 +18,7 @@ module Termium
     xml do
       root "entryTerm"
       map_attribute "order", to: :order
-      map_attribute "value", to: :value
+      map_attribute "value", to: :value, value_map: { to: { empty: :empty } }
       map_element "sourceRef", to: :source_ref
       map_element "parameter", to: :parameter
       map_element "abbreviation", to: :abbreviation
