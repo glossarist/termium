@@ -1,0 +1,25 @@
+---
+data:
+  definition:
+  - content: quotient of the character mean entropy by the mean duration of a character
+  examples: []
+  id: '2123225'
+  notes:
+  - content: The average information rate may be expressed in shannons per second.
+  - content: 16.04.07 (2382)
+  sources:
+  - origin:
+      ref: ISO/IEC 2382-16:1996
+    status: identical
+    type: lineage
+  - origin:
+      ref: Ranger, Natalie * 2006 * Bureau de la traduction
+    status: identical
+    type: lineage
+  terms:
+  - type: expression
+    normative_status: preferred
+    designation: average information rate
+  language_code: eng
+  entry_status: valid
+id: 33f0da1d-b8af-511c-8a7a-2f777419fa95
