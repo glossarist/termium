@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "source_details"
+
 module Termium
   # For <source>
   class Source < Lutaml::Model::Serializable
@@ -7,7 +9,8 @@ module Termium
     ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
 
     attribute :order, :integer
-    attribute :details, :string
+    attribute :details, SourceDetails
+
     xml do
       root "source"
       map_attribute "order", to: :order
@@ -15,12 +18,13 @@ module Termium
     end
 
     def content
-      if (matches = details.match(ISOIEC_BIB_REGEX))
+      presentable_details = details.to_s
+      if (matches = presentable_details.match(ISOIEC_BIB_REGEX))
         "ISO/IEC #{matches[1]}:#{matches[2]}"
-      elsif (matches = details.match(ISO_BIB_REGEX))
+      elsif (matches = presentable_details.match(ISO_BIB_REGEX))
         "ISO #{matches[1]}:#{matches[2]}"
       else
-        details
+        presentable_details
       end
     end
 
