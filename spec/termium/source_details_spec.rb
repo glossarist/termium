@@ -55,6 +55,18 @@ RSpec.describe Termium::SourceDetails do
         expect(described_class.cast(original)).to be(original)
       end
     end
+
+    context "with nil input" do
+      it "returns nil" do
+        expect(described_class.cast(nil)).to be_nil
+      end
+    end
+
+    context "with empty string" do
+      it "returns nil" do
+        expect(described_class.cast("")).to be_nil
+      end
+    end
   end
 
   describe ".serialize" do
@@ -62,6 +74,10 @@ RSpec.describe Termium::SourceDetails do
 
     it "returns the raw string" do
       expect(described_class.serialize(details)).to eq("ISO-IEC-2382-16 * 1996 *  *  * ")
+    end
+
+    it "returns nil for nil input" do
+      expect(described_class.serialize(nil)).to be_nil
     end
   end
 
