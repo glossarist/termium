@@ -3,7 +3,7 @@
 module Termium
   # Parses the asterisk-delimited source details string
   class SourceDetails
-    attr_accessor :raw, :author_name, :year, :organization, :department, :office, :division, :role
+    attr_accessor :raw, :standard, :author_name, :year, :organization, :department, :office, :division, :role
 
     class << self
       def cast(value)
@@ -28,13 +28,18 @@ module Termium
       columns = value.to_s.split("*").map(&:strip)
 
       @raw = value.to_s
-      @author_name = presence(columns[0])
       @year = presence(columns[1])
       @organization = presence(columns[2])
       @department = presence(columns[3])
       @office = presence(columns[4])
       @division = presence(columns[5])
       @role = presence(columns[6])
+
+      if @organization
+        @author_name = presence(columns[0])
+      else
+        @standard = presence(columns[0])
+      end
     end
 
     def presence(value)
