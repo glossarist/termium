@@ -2,7 +2,7 @@
 
 RSpec.describe Termium::SourceDetails do
   describe ".cast" do
-    context "with ISO standard (no organization)" do
+    context "with ISO-IEC standard identifier" do
       let(:input) { "ISO-IEC-2382-16 * 1996 *  *  * " }
       subject(:details) { described_class.cast(input) }
 
@@ -20,6 +20,23 @@ RSpec.describe Termium::SourceDetails do
 
       it "does not set organization" do
         expect(details.organization).to be_nil
+      end
+    end
+
+    context "with organization name (not a standard identifier)" do
+      let(:input) { "ISO/IEC JTC 1 * 2011" }
+      subject(:details) { described_class.cast(input) }
+
+      it "sets author_name from first column" do
+        expect(details.author_name).to eq("ISO/IEC JTC 1")
+      end
+
+      it "sets year" do
+        expect(details.year).to eq("2011")
+      end
+
+      it "does not set standard" do
+        expect(details.standard).to be_nil
       end
     end
 

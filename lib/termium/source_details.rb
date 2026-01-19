@@ -35,15 +35,24 @@ module Termium
       @division = presence(columns[5])
       @role = presence(columns[6])
 
-      if @organization
-        @author_name = presence(columns[0])
+      first_column = presence(columns[0])
+      if standard_identifier?(first_column)
+        @standard = first_column
       else
-        @standard = presence(columns[0])
+        @author_name = first_column
       end
     end
 
     def presence(value)
       value unless value.nil? || value.empty?
+    end
+
+    # Matches ISO or ISO-IEC standard identifiers with a document number
+    # e.g., "ISO-9000", "ISO-IEC-2382-16", "ISO-IEC-27001"
+    def standard_identifier?(value)
+      return false if value.nil?
+
+      value.match?(/\AISO(-IEC)?-\d+/i)
     end
 
     alias to_xml raw
