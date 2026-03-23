@@ -8,7 +8,7 @@ module Termium
 
     # <subject abbreviation="YBB" details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary"/>
     xml do
-      root "subject"
+      element "subject"
       map_attribute "abbreviation", to: :abbreviation
       map_attribute "details", to: :details
     end

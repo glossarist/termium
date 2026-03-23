@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 require "uuidtools"
-require_relative "language_module"
-require_relative "subject"
-require_relative "universal_entry"
-require_relative "source"
 
 module Termium
   # For <core>
@@ -18,7 +14,9 @@ module Termium
     attribute :source, Source, collection: true
 
     xml do
-      root "core"
+      element "core"
+      ordered
+
       map_attribute "disseminationLevel", to: :dissemination_level
       map_attribute "identificationNumber", to: :identification_number
       map_element "languageModule", to: :language_module

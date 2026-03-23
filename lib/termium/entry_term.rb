@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "source_ref"
-require_relative "abbreviation"
-require_relative "parameter"
-require_relative "designation_operations"
-
 module Termium
   # For <entryTerm>
   class EntryTerm < Lutaml::Model::Serializable
@@ -16,7 +11,7 @@ module Termium
     include DesignationOperations
 
     xml do
-      root "entryTerm"
+      element "entryTerm"
       map_attribute "order", to: :order
       map_attribute "value", to: :value, value_map: { to: { empty: :empty } }
       map_element "sourceRef", to: :source_ref

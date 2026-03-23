@@ -6,7 +6,7 @@ module Termium
     attribute :language, :string
     attribute :order, :integer
     xml do
-      root "extractLanguage"
+      element "extractLanguage"
       map_attribute "language", to: :language
       map_attribute "order", to: :order
     end

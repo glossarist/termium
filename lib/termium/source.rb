@@ -9,7 +9,7 @@ module Termium
     attribute :order, :integer
     attribute :details, :string
     xml do
-      root "source"
+      element "source"
       map_attribute "order", to: :order
       map_attribute "details", to: :details
     end
