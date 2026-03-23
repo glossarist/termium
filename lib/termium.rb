@@ -2,28 +2,23 @@
 
 require "glossarist"
 
-require "lutaml/model"
-require "lutaml/model/xml_adapter/nokogiri_adapter"
-
-Lutaml::Model::Config.configure do |config|
-  config.xml_adapter = Lutaml::Model::XmlAdapter::NokogiriAdapter
-end
-
 module Termium
   class Error < StandardError; end
-end
 
-require_relative "termium/version"
-require_relative "termium/extract"
-require_relative "termium/extract_language"
-require_relative "termium/core"
-require_relative "termium/abbreviation"
-require_relative "termium/designation_operations"
-require_relative "termium/entry_term"
-require_relative "termium/language_module"
-require_relative "termium/parameter"
-require_relative "termium/source"
-require_relative "termium/source_ref"
-require_relative "termium/subject"
-require_relative "termium/textual_support"
-require_relative "termium/universal_entry"
+  autoload :Version, "termium/version"
+  autoload :Extract, "termium/extract"
+  autoload :ExtractLanguage, "termium/extract_language"
+  autoload :Core, "termium/core"
+  autoload :Abbreviation, "termium/abbreviation"
+  autoload :DesignationOperations, "termium/designation_operations"
+  autoload :EntryTerm, "termium/entry_term"
+  autoload :LanguageModule, "termium/language_module"
+  autoload :Parameter, "termium/parameter"
+  autoload :Namespace, "termium/namespace"
+  autoload :Source, "termium/source"
+  autoload :SourceRef, "termium/source_ref"
+  autoload :Subject, "termium/subject"
+  autoload :TextualSupport, "termium/textual_support"
+  autoload :UniversalEntry, "termium/universal_entry"
+
+end

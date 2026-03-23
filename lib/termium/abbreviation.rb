@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "source_ref"
-require_relative "parameter"
-require_relative "designation_operations"
-
 module Termium
   # For <abbreviation>
   class Abbreviation < Lutaml::Model::Serializable
@@ -20,7 +16,7 @@ module Termium
     # <parameter abbreviation="NORM" />
 
     xml do
-      root "abbreviation"
+      element "abbreviation"
       map_attribute "order", to: :order
       map_attribute "value", to: :value
       map_element "sourceRef", to: :source_ref

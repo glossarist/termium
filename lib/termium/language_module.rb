@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-require_relative "entry_term"
-require_relative "textual_support"
-
 module Termium
   # For <languageModule>
   class LanguageModule < Lutaml::Model::Serializable
     attribute :language, :string
     attribute :entry_term, EntryTerm, collection: true
     attribute :textual_support, TextualSupport, collection: true
+
     xml do
-      root "languageModule"
+      element "languageModule"
       map_attribute "language", to: :language
       map_element "entryTerm", to: :entry_term
       map_element "textualSupport", to: :textual_support
@@ -75,11 +73,11 @@ module Termium
       Glossarist::LocalizedConcept.new(x).tap do |concept|
         # Fill in register parameters
         if options[:date_accepted]
-          puts options[:date_accepted].inspect
+          # puts options[:date_accepted].inspect
           concept.date_accepted = options[:date_accepted]
         end
 
-        puts concept.inspect
+        # puts concept.inspect
       end
     end
   end

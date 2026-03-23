@@ -5,7 +5,7 @@ module Termium
   class SourceRef < Lutaml::Model::Serializable
     attribute :order, :integer
     xml do
-      root "sourceRef"
+      element "sourceRef"
       map_attribute "order", to: :order
     end
   end
