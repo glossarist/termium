@@ -3,8 +3,8 @@
 module Termium
   # For <source>
   class Source < Lutaml::Model::Serializable
-    ISO_BIB_REGEX = /\AISO-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
-    ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
+    ISO_BIB_REGEX = /\AISO-([\d-]+)\s+\*\s+(\d{4})\s+.*/
+    ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/
 
     attribute :order, :integer
     attribute :details, :string

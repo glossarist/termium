@@ -20,5 +20,4 @@ module Termium
   autoload :Subject, "termium/subject"
   autoload :TextualSupport, "termium/textual_support"
   autoload :UniversalEntry, "termium/universal_entry"
-
 end
