@@ -8,7 +8,7 @@ RSpec.shared_examples "a serializer" do
     output = serialized.to_xml(
       prefix: true,
       declaration: true,
-      encoding: "utf-8"
+      encoding: "utf-8",
     )
 
     expect(output).to be_xml_equivalent_to(input)

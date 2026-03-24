@@ -6,7 +6,7 @@ module Termium
     PART_OF_SPEECH_CODE_MAPPING = {
       "ADJ" => "adj",
       "N" => "noun",
-      "V" => "verb"
+      "V" => "verb",
     }.freeze
     def part_of_speech
       value = parameter.detect do |x|
@@ -19,7 +19,7 @@ module Termium
     GENDER_CODE_MAPPING = {
       "F" => "f",
       "M" => "m",
-      "EPI" => "c" # this means "Epicine"
+      "EPI" => "c", # this means "Epicine"
     }.freeze
     def gender
       value = parameter.detect do |x|

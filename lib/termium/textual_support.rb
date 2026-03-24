@@ -29,7 +29,7 @@ module Termium
       end
     end
 
-    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/.freeze
+    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/
 
     def is_example?
       value_cleaned.match(EXAMPLE_REGEX)
@@ -51,7 +51,7 @@ module Termium
       value_cleaned.gsub(EXAMPLE_REGEX, "")
     end
 
-    DEFINITION_REGEX = /\A<(.+?)>\s*/.freeze
+    DEFINITION_REGEX = /\A<(.+?)>\s*/
 
     def value_definition
       value_cleaned.gsub(DEFINITION_REGEX, "")
