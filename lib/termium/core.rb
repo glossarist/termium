@@ -40,9 +40,12 @@ module Termium
       UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, str).to_s
     end
 
-    # TODO: Utilize "subject" in the Glossarist object:
-    # <subject abbreviation="YBB"
-    # details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary" />
+    def subject_field
+      return nil unless subject
+
+      "#{subject.details} (#{subject.abbreviation})"
+    end
+
     def to_concept(options = {})
       Glossarist::ManagedConcept.new.tap do |concept|
         # The way to set the universal concept's identifier: data.identifier
@@ -71,6 +74,7 @@ module Termium
             localized_concept.notes << Glossarist::DetailedDefinition.new(content: entry.value)
           end
           localized_concept.sources = concept_sources
+          localized_concept.subject = subject_field
           concept.add_localization(localized_concept)
         end
       end
