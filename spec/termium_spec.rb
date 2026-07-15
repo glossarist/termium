@@ -96,12 +96,14 @@ RSpec.describe Termium do
     # Passes argv directly rather than through a shell: POSIX quoting would
     # reach cmd.exe verbatim on Windows and mangle the script.
     def save_in_clean_process(dir)
+      root = File.expand_path("..", __dir__)
       script = <<~RUBY
         require "termium"
-        xml = File.read("spec/fixtures/Characters.xml")
+        xml = File.read(#{File.join(root, 'spec/fixtures/Characters.xml').inspect})
         Termium::Extract.from_xml(xml).to_concept.save_to_files(#{dir.inspect})
       RUBY
-      Open3.capture2e(RbConfig.ruby, "-Ilib", "-e", script)
+      Open3.capture2e(RbConfig.ruby, "-I#{File.join(root, 'lib')}", "-e", script,
+                      chdir: root)
     end
 
     it "can save a dataset without the caller requiring fileutils" do

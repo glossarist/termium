@@ -50,12 +50,13 @@ module Termium
 
     def to_h
       # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
-      return nil unless definition
+      value = definition
+      return nil unless value
 
       src = {
         "language_code" => LANGUAGE_CODE_MAPPING[language.downcase],
         "terms" => designations.map(&:to_h),
-        "definition" => [{ content: definition }],
+        "definition" => detailed_definitions([value]),
         "notes" => detailed_definitions(notes),
         "examples" => detailed_definitions(examples),
         "entry_status" => "valid",
