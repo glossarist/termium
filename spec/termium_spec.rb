@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require "English"
-require "shellwords"
+require "open3"
 require "tmpdir"
 require "yaml"
 
@@ -94,21 +93,23 @@ RSpec.describe Termium do
   # in-process the spec's own `require "tmpdir"` loads fileutils and masks the bug,
   # which is why it reaches production while the suite stays green.
   describe "loading termium standalone" do
+    # Passes argv directly rather than through a shell: POSIX quoting would
+    # reach cmd.exe verbatim on Windows and mangle the script.
     def save_in_clean_process(dir)
       script = <<~RUBY
         require "termium"
         xml = File.read("spec/fixtures/Characters.xml")
         Termium::Extract.from_xml(xml).to_concept.save_to_files(#{dir.inspect})
       RUBY
-      `#{RbConfig.ruby} -Ilib -e #{Shellwords.escape(script)} 2>&1`
+      Open3.capture2e(RbConfig.ruby, "-Ilib", "-e", script)
     end
 
     it "can save a dataset without the caller requiring fileutils" do
-      output = Dir.mktmpdir { |dir| save_in_clean_process(dir) }
+      output, status = Dir.mktmpdir { |dir| save_in_clean_process(dir) }
 
       aggregate_failures do
         expect(output).not_to include("NameError")
-        expect($CHILD_STATUS).to be_success
+        expect(status).to be_success
       end
     end
   end
