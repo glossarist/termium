@@ -45,8 +45,12 @@ module Termium
     # details="Compartment - ISO/IEC JTC 1 Information Technology Vocabulary" />
     def to_concept(options = {})
       Glossarist::ManagedConcept.new.tap do |concept|
-        # The way to set the universal concept's identifier: data.identifier
-        concept.id = identification_number
+        # `data` must be assigned, not mutated: lutaml-model skips serializing
+        # attributes still flagged as using their default, so mutating the
+        # default `ManagedConceptData` in place drops the whole `data` block.
+        concept.data = Glossarist::ManagedConceptData.new(
+          id: identification_number,
+        )
 
         concept.uuid = uuid
 
@@ -55,24 +59,33 @@ module Termium
         concept.status = "valid"
 
         if options[:date_accepted]
-          concept.date_accepted = options[:date_accepted]
+          concept.date_accepted = Glossarist::ConceptDate.new(
+            date: options[:date_accepted],
+            type: "accepted",
+          )
         end
 
-        language_module.map do |lang_mod|
-          localized_concept = lang_mod.to_concept(options)
+        add_localizations(concept, options)
+      end
+    end
 
-          # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
-          next if localized_concept.nil?
+    private
 
-          localized_concept.id = identification_number
-          localized_concept.uuid = uuid("#{identification_number}-#{lang_mod.language}")
+    def add_localizations(concept, options)
+      language_module.each do |lang_mod|
+        localized_concept = lang_mod.to_concept(options)
 
-          universal_entry.each do |entry|
-            localized_concept.notes << Glossarist::DetailedDefinition.new(content: entry.value)
-          end
-          localized_concept.sources = concept_sources
-          concept.add_localization(localized_concept)
+        # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
+        next if localized_concept.nil?
+
+        localized_concept.id = identification_number
+        localized_concept.uuid = uuid("#{identification_number}-#{lang_mod.language}")
+
+        universal_entry.each do |entry|
+          localized_concept.notes << Glossarist::DetailedDefinition.new(content: entry.value)
         end
+        localized_concept.sources = concept_sources
+        concept.add_localization(localized_concept)
       end
     end
   end

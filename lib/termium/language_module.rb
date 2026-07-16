@@ -50,14 +50,15 @@ module Termium
 
     def to_h
       # TODO: This is needed to skip the empty french entries of 10031781 and 10031778
-      return nil unless definition
+      value = definition
+      return nil unless value
 
       src = {
         "language_code" => LANGUAGE_CODE_MAPPING[language.downcase],
         "terms" => designations.map(&:to_h),
-        "definition" => [{ content: definition }],
-        "notes" => notes,
-        "examples" => examples,
+        "definition" => detailed_definitions([value]),
+        "notes" => detailed_definitions(notes),
+        "examples" => detailed_definitions(examples),
         "entry_status" => "valid",
       }
 
@@ -70,15 +71,28 @@ module Termium
       x = to_h
       return nil unless x
 
-      Glossarist::LocalizedConcept.new(x).tap do |concept|
+      # The flat hash belongs under "data": LocalizedConcept is data-backed, and
+      # `.new` would silently discard every key that is not one of its own
+      # attributes. `of_yaml` also routes "terms" through ConceptData.
+      Glossarist::LocalizedConcept.of_yaml({ "data" => x }).tap do |concept|
         # Fill in register parameters
         if options[:date_accepted]
-          # puts options[:date_accepted].inspect
-          concept.date_accepted = options[:date_accepted]
+          # `date_accepted` is a read-only derived accessor on Concept; the
+          # accepted date is set by way of `data.dates`.
+          concept.data.dates = [
+            Glossarist::ConceptDate.new(
+              date: options[:date_accepted],
+              type: "accepted",
+            ),
+          ]
         end
-
-        # puts concept.inspect
       end
+    end
+
+    private
+
+    def detailed_definitions(values)
+      values.map { |value| { "content" => value } }
     end
   end
 end

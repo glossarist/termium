@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# glossarist's ManagedConceptCollection#save_to_files calls FileUtils without
+# requiring it, so loading it here keeps `termium convert` from raising
+# NameError.
+require "fileutils"
 require "glossarist"
 
 module Termium
