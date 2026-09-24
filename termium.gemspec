@@ -31,7 +31,10 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "glossarist", "~> 2.11.3"
+  # glossarist 2.14 relexes rubyzip (~> 3.7, matching lutaml-model) and
+  # tracks lutaml-model 0.8.5x — 2.11.x caps rubyzip < 3, which makes
+  # the whole bundle unresolvable against current lutaml-model.
+  spec.add_dependency "glossarist", "~> 2.14.0"
   spec.add_dependency "lutaml-model", "~> 0.8.0"
   spec.add_dependency "thor"
   spec.add_dependency "uuidtools"
