@@ -2,10 +2,15 @@
 # See https://github.com/metanorma/cimas
 name: release
 
+# packages: write matches the ceiling the called chain declares
+# (relaton/support release.yml, metanorma/ci rubygems-release.yml);
+# a reusable workflow cannot exceed the caller's grant, and a missing
+# permission here startup-fails the run before any job starts.
 permissions:
   contents: write
   id-token: write
   pull-requests: write
+  packages: write
 
 on:
   workflow_dispatch:
