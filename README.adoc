@@ -58,11 +58,11 @@ The resulting dataset will look like this:
 ----
 {OUTPUT_PATH}/
 ├── concepts/
-│   ├── {CONCEPT_ID}.yaml
-│   ├── ...
+│   ├── {CONCEPT_ID}.yaml
+│   ├── ...
 ├── localized_concepts/
-    ├── {LOCALIZED_CONCEPT_ID}.yaml
-    ├── ...
+    ├── {LOCALIZED_CONCEPT_ID}.yaml
+    ├── ...
 ----
 
 ==== Usage

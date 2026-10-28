@@ -6,7 +6,7 @@ module Termium
     # <parameter abbreviation="NORM"/>
     attribute :abbreviation, :string
     xml do
-      root "parameter"
+      element "parameter"
       map_attribute "abbreviation", to: :abbreviation
     end
   end

@@ -7,7 +7,8 @@ module Termium
   class Cli < Thor
     desc "convert", "Convert TERMIUM entries into a Glossarist dataset"
 
-    option :input_file, aliases: :i, required: true, desc: "Path to TERMIUM Plus XML extract"
+    option :input_file, aliases: :i, required: true,
+                        desc: "Path to TERMIUM Plus XML extract"
     option :output_file, aliases: :o, desc: "Output file path"
     option :date_accepted, desc: "Date of acceptance for the dataset"
 
@@ -46,14 +47,15 @@ module Termium
       input_path = input_file_as_path(options[:input_file])
 
       puts "Reading TERMIUM export file: #{input_path.relative_path_from(Dir.pwd)}"
-      termium_extract = Termium::Extract.from_xml(IO.read(input_path.expand_path))
+      termium_extract = Termium::Extract.from_xml(File.read(input_path.expand_path))
 
       puts "Size of TERMIUM dataset: #{termium_extract.core.size}"
 
       puts "Converting to Glossarist..."
       convert_options = {}
       if options[:date_accepted]
-        convert_options[:date_accepted] = Date.parse(options[:date_accepted]).iso8601
+        convert_options[:date_accepted] =
+          Date.parse(options[:date_accepted]).iso8601
       end
       glossarist_col = termium_extract.to_concept(convert_options)
       # pp glossarist_col.first
