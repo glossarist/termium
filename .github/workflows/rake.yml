@@ -8,9 +8,8 @@ on:
     tags: [ v* ]
   pull_request:
 
-permissions:
-  contents: write
-
 jobs:
   rake:
     uses: relaton/support/.github/workflows/rake.yml@main
+    secrets:
+      pat_token: ${{ secrets.GLOSSARIST_CI_PAT_TOKEN }}
