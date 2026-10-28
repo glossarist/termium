@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "source_ref"
-require_relative "parameter"
-
 module Termium
   # For <universalEntry>
   class UniversalEntry < Lutaml::Model::Serializable
@@ -18,7 +15,7 @@ module Termium
     # </universalEntry>
 
     xml do
-      root "universalEntry"
+      element "universalEntry"
       map_attribute "order", to: :order
       map_element "value", to: :value
       map_element "sourceRef", to: :source_ref

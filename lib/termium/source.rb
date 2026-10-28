@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "source_details"
-
 module Termium
   # For <source>
   class Source < Lutaml::Model::Serializable
-    ISO_BIB_REGEX = /\AISO-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
-    ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/.freeze
+    ISO_BIB_REGEX = /\AISO-([\d-]+)\s+\*\s+(\d{4})\s+.*/
+    ISOIEC_BIB_REGEX = /\AISO-IEC-([\d-]+)\s+\*\s+(\d{4})\s+.*/
 
     attribute :order, :integer
     attribute :details, SourceDetails
 
     xml do
-      root "source"
+      element "source"
       map_attribute "order", to: :order
       map_attribute "details", to: :details
     end
@@ -28,12 +26,27 @@ module Termium
       end
     end
 
+    # glossarist >= 2.14 has no `ref` on ConceptSource; the reference lives in
+    # `origin`, a Citation.
     def to_concept_source
-      Glossarist::ConceptSource.new({
-                                      "type" => "lineage",
-                                      "ref" => content,
-                                      "status" => "identical",
-                                    })
+      Glossarist::ConceptSource.new(
+        type: "lineage",
+        status: "identical",
+        origin: origin_citation,
+      )
+    end
+
+    private
+
+    def origin_citation
+      if (matches = content.match(/\A(ISO(?:\/IEC)?) (.+)\z/))
+        Glossarist::Citation.new(
+          ref: Glossarist::Citation::Ref.new(source: matches[1],
+                                             id: matches[2]),
+        )
+      else
+        Glossarist::Citation.new(text: content)
+      end
     end
   end
 end

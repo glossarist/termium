@@ -2,27 +2,27 @@
 
 module Termium
   # Parses the asterisk-delimited source details string
-  class SourceDetails
-    attr_accessor :raw, :standard, :author_name, :year, :organization, :department, :office, :division, :role
+  class SourceDetails < Lutaml::Model::Type::Value
+    attr_accessor :raw, :standard, :author_name, :year, :organization,
+                  :department, :office, :division, :role
 
     class << self
-      def cast(value)
+      def cast(value, _options = {})
         return value if value.is_a?(SourceDetails)
         return nil if value.nil? || value.to_s.strip.empty?
 
-        new(
-          value
-        )
+        new(value)
       end
 
       def serialize(value)
-        value&.raw
+        value.is_a?(SourceDetails) ? value.raw : value&.to_s
       end
 
       alias from_xml cast
     end
 
-    def initialize(value)
+    # Does not call super: Type::Value#initialize would cast again.
+    def initialize(value) # rubocop:disable Lint/MissingSuper
       return if value.nil? || value.to_s.strip.empty?
 
       columns = value.to_s.split("*").map(&:strip)

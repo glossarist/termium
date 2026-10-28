@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "source_ref"
-
 module Termium
   # For <textualSupport>
   class TextualSupport < Lutaml::Model::Serializable
@@ -10,7 +8,7 @@ module Termium
     attribute :value, :string
     attribute :source_ref, SourceRef
     xml do
-      root "textualSupport"
+      element "textualSupport"
       map_attribute "order", to: :order
       map_attribute "type", to: :type
       map_element "value", to: :value
@@ -31,7 +29,7 @@ module Termium
       end
     end
 
-    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/.freeze
+    EXAMPLE_REGEX = /\AEx[ea]mples?\s*:\s*/
 
     def is_example?
       value_cleaned.match(EXAMPLE_REGEX)
@@ -53,7 +51,7 @@ module Termium
       value_cleaned.gsub(EXAMPLE_REGEX, "")
     end
 
-    DEFINITION_REGEX = /\A<(.+?)>\s*/.freeze
+    DEFINITION_REGEX = /\A<(.+?)>\s*/
 
     def value_definition
       value_cleaned.gsub(DEFINITION_REGEX, "")

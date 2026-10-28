@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "pry"
 require "termium"
-require "xml-c14n"
-require "equivalent-xml"
+require "canon"
 
 Dir["spec/support/**/*.rb"].each do |it|
   require File.expand_path(it)
@@ -21,4 +19,9 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+end
+
+require "lutaml/model"
+Lutaml::Model::Config.configure do |config|
+  config.xml_adapter_type = :nokogiri
 end
