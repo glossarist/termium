@@ -63,6 +63,14 @@ RSpec.describe Termium do
       end
     end
 
+    it "writes the TERMIUM subject onto every localization" do
+      concept = core.to_concept
+      subject = "Compartment - ISO/IEC JTC 1 Information Technology Vocabulary (YBB)"
+
+      subjects = %w[eng fre].map { |lang| concept.localization(lang).subject }
+      expect(subjects).to eq([subject, subject])
+    end
+
     it "wraps notes as detailed definitions" do
       data = core.to_concept.localization("eng").to_yaml_hash["data"]
 
