@@ -20,6 +20,7 @@ module Termium
   autoload :Parameter, "termium/parameter"
   autoload :Namespace, "termium/namespace"
   autoload :Source, "termium/source"
+  autoload :SourceDetails, "termium/source_details"
   autoload :SourceRef, "termium/source_ref"
   autoload :Subject, "termium/subject"
   autoload :TextualSupport, "termium/textual_support"

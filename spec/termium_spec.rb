@@ -71,6 +71,15 @@ RSpec.describe Termium do
       expect(subjects).to eq([subject, subject])
     end
 
+    it "writes the parsed source details as the lineage origin" do
+      sources = core.to_concept.localization("eng").to_yaml_hash.dig("data", "sources")
+
+      expect(sources).to include(
+        a_hash_including("type" => "lineage",
+                         "origin" => { "ref" => { "source" => "ISO/IEC", "id" => "2382-16:1996" } }),
+      )
+    end
+
     it "wraps notes as detailed definitions" do
       data = core.to_concept.localization("eng").to_yaml_hash["data"]
 
